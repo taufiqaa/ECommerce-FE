@@ -1,32 +1,45 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-product-list',
-  templateUrl: './product-list-table.component.html',
-//  templateUrl: './product-list.component.html',
+  templateUrl: './product-list-grid.component.html',
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent {
 
-products : Product[] = [];
-//Inject the Product Service to get data from Services
-constructor(private productService : ProductService){}
+  products: Product[] | undefined;
+  currentCategoryId: number = 1;
 
-//Similar to @PostConstruct
-ngOnInit():void{
-  this.listProduct();
-}
-//Method is invoked once you subscribe
-  listProduct() {
-    this.productService.getProductList().subscribe(
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute) {}
 
-      //assign results to the Product Array
-      data => {
-        this.products = data;
-      }
-    )
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(() => {
+      this.listProduct();
+    });
+    this.listProduct();
   }
 
-}
+  listProduct() {
+    //check if "id" parameter is available
+    this.route.paramMap.subscribe(params => {
+      if (params.has('id')) {
+        this.currentCategoryId = +params.get('id')!;
+      } else {
+        this.currentCategoryId = 1;
+      }
+      console.log('currentCategoryId:', this.currentCategoryId);
+  
+      //now get the products for the given category id
+      this.productService.getProductList(this.currentCategoryId).subscribe(
+        data => {
+          this.products = data;
+        }
+      );
+    });
+  }
+  }

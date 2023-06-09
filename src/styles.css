@@ -41,12 +41,12 @@ input{
 
 button{
     border:none;
-    background:0 0
+    background:0 0;
 }
 
 img{
     max-width:100%;
-    height:auto
+    height: auto;
 }
 
 p{
@@ -198,6 +198,12 @@ aside.menu-sidebar.d-none.d-lg-block.clr{
 .arrows i{
     font-size:30px;
     padding:4px 4px
+    
+}
+
+.row{
+    
+    display: inline-flexbox;
 }
 
 section{
@@ -538,7 +544,8 @@ input.au-input.au-input-xl{
     margin-left: 5px;
 }
 .product-box{
-    margin-bottom:60px
+    margin-bottom:60px;
+    display: inline-block;
 }
 .price{
     margin:15px 0 0;
