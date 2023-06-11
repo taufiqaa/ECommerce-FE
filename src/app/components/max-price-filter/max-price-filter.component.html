@@ -1,0 +1,12 @@
+<div class="form-header">
+    <input #maxPriceInput type="number"
+    placeholder="Maximum Price"
+    class="au-input au-input-xl"
+    (keyup.enter)="doFilterMaximumPrice(maxPriceInput.valueAsNumber)"/>
+
+    <button (click)="doFilterMaximumPrice(maxPriceInput.valueAsNumber)"
+    class="au-btn-submit">
+    Submit
+    </button>
+
+</div>

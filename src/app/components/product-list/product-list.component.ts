@@ -13,6 +13,7 @@ export class ProductListComponent {
   products: Product[] | undefined;
   currentCategoryId: number = 1;
   searchMode:boolean = false;
+  maximumPrice: number = 9999999999;
 
   constructor(
     private productService: ProductService,
@@ -27,9 +28,13 @@ export class ProductListComponent {
 
   listProduct() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
+    
+    this.maximumPrice = +this.route.snapshot.paramMap.has("maxPrice");
 
     if(this.searchMode){
       this.handledSearchProducts();
+    }else if(this.maximumPrice){
+      this.handledMaximumPriceProducts();
     }else{
       this.handledListProducts();
     }
@@ -42,6 +47,16 @@ export class ProductListComponent {
     this.productService.searchProducts(theKeyword).subscribe(
       data=>{
         this.products =data;
+      }
+    )
+
+  }
+
+  handledMaximumPriceProducts(){
+    const theMaxPrice : number  = +this.route.snapshot.paramMap.get('maxPrice')!;
+    this.productService.maximumPriceProducts(theMaxPrice).subscribe(
+      data=>{
+        this.products=data;
       }
     )
 

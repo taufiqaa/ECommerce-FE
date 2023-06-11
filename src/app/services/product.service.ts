@@ -46,12 +46,20 @@ export class ProductService {
     return this.getProducts(searchUrl)
   }
 
+  maximumPriceProducts(theMaxPrice : number): Observable<Product[]>{
+    const searchUrl = `${this.baseUrl}/search/findByUnitPriceLessThan?unitPrice=${theMaxPrice}`;
+    
+    return this.getProducts(searchUrl)
+  }
+
   private getProducts(searchUrl: string): Observable<Product[]> {
     return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
       map(response => response._embedded.products)
     );
   }
 }
+
+
 
 //unwraps the JSON from Spring DATA REST _embedded entry
 interface GetResponseProducts{
