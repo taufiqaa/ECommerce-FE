@@ -12,6 +12,7 @@ export class ProductListComponent {
 
   products: Product[] | undefined;
   currentCategoryId: number = 1;
+  searchMode:boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -25,8 +26,31 @@ export class ProductListComponent {
   }
 
   listProduct() {
-    //check if "id" parameter is available
-    this.route.paramMap.subscribe(params => {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    if(this.searchMode){
+      this.handledSearchProducts();
+    }else{
+      this.handledListProducts();
+    }
+  }
+
+
+  handledSearchProducts(){
+    const theKeyword : string = this.route.snapshot.paramMap.get('keyword')!;
+    // search for the product using keyword
+    this.productService.searchProducts(theKeyword).subscribe(
+      data=>{
+        this.products =data;
+      }
+    )
+
+  }
+
+
+  handledListProducts(){
+     //check if "id" parameter is available
+     this.route.paramMap.subscribe(params => {
       if (params.has('id')) {
         this.currentCategoryId = +params.get('id')!;
       } else {
@@ -40,6 +64,9 @@ export class ProductListComponent {
           this.products = data;
         }
       );
-    });
+    }
+  );
   }
+
+
   }

@@ -17,6 +17,8 @@ export class ProductService {
 
   private categoryUrl = 'http://localhost:1234/api/product-category';
 
+
+
   //inject Http client
   constructor(private httpClient : HttpClient) { }
 
@@ -25,9 +27,7 @@ export class ProductService {
     // Build URL based on category id
     const searchUrl = `${this.baseUrl}/search/findByProductCategoryId?id=${theCategoryId}`;
   
-    return this.httpClient.get<GetResponseProduct>(searchUrl).pipe(
-      map(response => response._embedded.products)
-    );
+    return this.getProducts(searchUrl);
   }
 
 
@@ -38,10 +38,23 @@ export class ProductService {
     );
  
 }
+
+  searchProducts(theKeyword: string): Observable<Product[]>{
+
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
+
+    return this.getProducts(searchUrl)
+  }
+
+  private getProducts(searchUrl: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => response._embedded.products)
+    );
+  }
 }
 
 //unwraps the JSON from Spring DATA REST _embedded entry
-interface GetResponseProduct{
+interface GetResponseProducts{
   _embedded:{
     products : Product[]
   }
