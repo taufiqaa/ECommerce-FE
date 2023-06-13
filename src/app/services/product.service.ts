@@ -10,6 +10,7 @@ import { ProductCategory } from '../common/product-category';
 })
 export class ProductService {
 
+
 //http://localhost:1234/api/products = only the 20 first items
 //http://localhost:1234/api/products?size=x, x = items that want to appear
 
@@ -57,6 +58,15 @@ export class ProductService {
       map(response => response._embedded.products)
     );
   }
+
+  getProductDetail(theProductId : number): Observable<Product>{
+    
+    const productDetailUrl = `${this.baseUrl}/${theProductId}`;
+
+    return this.httpClient.get<Product>(productDetailUrl);
+  }
+
+ 
 }
 
 

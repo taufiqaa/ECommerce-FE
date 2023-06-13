@@ -8,9 +8,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './components/search/search.component';
 import { MaxPriceFilterComponent } from './components/max-price-filter/max-price-filter.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 //Define routes
 const route : Routes =[
+{path:'products/:id', component: ProductDetailsComponent},
 {path:'maximum-price/:maxPrice', component: ProductListComponent},
 {path:'search/:keyword', component : ProductListComponent},
 {path:'category/:id', component : ProductListComponent},
@@ -27,7 +29,8 @@ const route : Routes =[
     ProductListComponent,
     ProductCategoryMenuComponent,
     SearchComponent,
-    MaxPriceFilterComponent
+    MaxPriceFilterComponent,
+    ProductDetailsComponent
   ],
   imports: [
     RouterModule.forRoot(route),
