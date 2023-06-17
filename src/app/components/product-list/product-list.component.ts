@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
+// import { PageEvent } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-product-list',
@@ -10,10 +12,18 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductListComponent {
 
-  products: Product[] | undefined;
+  products: Product[] = [];
   currentCategoryId: number = 1;
   searchMode:boolean = false;
+  previouslyCategoryId: number = 1;
   maximumPrice: number = 9999999999;
+  // pageEvent: PageEvent;
+
+  //new properties for pagination
+  thePageNumber : number = 1;
+  thePageSize : number = 10;
+  theTotalElements: number = 0;
+ 
 
   constructor(
     private productService: ProductService,
@@ -73,15 +83,35 @@ export class ProductListComponent {
       }
       console.log('currentCategoryId:', this.currentCategoryId);
   
-      //now get the products for the given category id
-      this.productService.getProductList(this.currentCategoryId).subscribe(
-        data => {
-          this.products = data;
-        }
-      );
+      // check if we have a different category than previous
+      // Note : angular will reuse a component if it is currently being viewed
+      //
+
+
+      //if we have a different category id than previous
+      // the set thePageNumber back to 1
+      if(this.previouslyCategoryId != this.currentCategoryId){
+        this.thePageNumber=1;
+      }
+
+
+      this.previouslyCategoryId = this.currentCategoryId;
+      console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`);
+      //now get the products for the given category Id
+      this.productService.getProductListPaginate(this.thePageNumber - 1,
+                                                  this.thePageSize,
+                                                  this.currentCategoryId)
+                                                  .subscribe(
+                                                    data=>{
+                                                      this.products = data._embedded.products;
+                                                      this.thePageNumber = data.page.number + 1;
+                                                      this.thePageSize = data.page.size;
+                                                      this.theTotalElements = data.page.totalElements;
+                                                    }
+                                                  );
+
+
     }
   );
   }
-
-
   }

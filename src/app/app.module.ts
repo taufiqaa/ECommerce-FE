@@ -9,6 +9,7 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 import { SearchComponent } from './components/search/search.component';
 import { MaxPriceFilterComponent } from './components/max-price-filter/max-price-filter.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //Define routes
 const route : Routes =[
@@ -35,7 +36,8 @@ const route : Routes =[
   imports: [
     RouterModule.forRoot(route),
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
