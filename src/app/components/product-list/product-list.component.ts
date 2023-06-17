@@ -15,13 +15,13 @@ export class ProductListComponent {
   products: Product[] = [];
   currentCategoryId: number = 1;
   searchMode:boolean = false;
-  previouslyCategoryId: number = 1;
+  previouslyCategoryId: number =1;
   maximumPrice: number = 9999999999;
   // pageEvent: PageEvent;
 
   //new properties for pagination
   thePageNumber : number = 1;
-  thePageSize : number = 10;
+  thePageSize : number = 5;
   theTotalElements: number = 0;
  
 
@@ -97,12 +97,11 @@ export class ProductListComponent {
 
       this.previouslyCategoryId = this.currentCategoryId;
       console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`);
-      //now get the products for the given category Id
+
       this.productService.getProductListPaginate(this.thePageNumber - 1,
                                                   this.thePageSize,
-                                                  this.currentCategoryId)
-                                                  .subscribe(
-                                                    data=>{
+                                                  this.currentCategoryId).subscribe(
+                                                    (data)=>{
                                                       this.products = data._embedded.products;
                                                       this.thePageNumber = data.page.number + 1;
                                                       this.thePageSize = data.page.size;
@@ -114,4 +113,10 @@ export class ProductListComponent {
     }
   );
   }
+
+    updatePageSize(pageSize: string){
+      this.thePageSize = +pageSize;
+      this.thePageNumber = 1;
+      this.listProduct();
+    }
   }
