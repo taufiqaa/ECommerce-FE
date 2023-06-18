@@ -55,6 +55,14 @@ export class ProductService {
     return this.getProducts(searchUrl)
   }
 
+  searchProductsPaginate(thePageNumber : number,
+                          thePageSize: number,
+                          theKeyword : string ): Observable<GetResponseProducts>{
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}` + `&page=${thePageNumber}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+                          }
+
   maximumPriceProducts(theMaxPrice : number): Observable<Product[]>{
     const searchUrl = `${this.baseUrl}/search/findByUnitPriceLessThan?unitPrice=${theMaxPrice}`;
     
