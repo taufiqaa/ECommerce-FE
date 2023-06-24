@@ -11,9 +11,11 @@ import { MaxPriceFilterComponent } from './components/max-price-filter/max-price
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
+import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 
 //Define routes
 const route : Routes =[
+{path:'cart-details', component: CartDetailsComponent},
 {path:'products/:id', component: ProductDetailsComponent},
 {path:'maximum-price/:maxPrice', component: ProductListComponent},
 {path:'search/:keyword', component : ProductListComponent},
@@ -33,7 +35,8 @@ const route : Routes =[
     SearchComponent,
     MaxPriceFilterComponent,
     ProductDetailsComponent,
-    CartStatusComponent
+    CartStatusComponent,
+    CartDetailsComponent
   ],
   imports: [
     RouterModule.forRoot(route),

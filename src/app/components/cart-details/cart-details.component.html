@@ -1,0 +1,64 @@
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+      <!-- Show table if there are products selected -->
+      <div *ngIf="cartItems.length > 0">
+        <table class="table table-bordered">
+          <!-- Table headers -->
+          <tr>
+            <th width="20%">Product Image</th>
+            <th width="50%">Product Detail</th>
+            <th width="30%"></th>
+          </tr>
+
+          <!-- Table rows for cart items -->
+          <tr *ngFor="let theCartItems of cartItems">
+            <td>
+              <img src="{{ theCartItems.imageUrl }}" class="img-responsive" width="125px">
+            </td>
+            <td>
+              <p>{{ theCartItems.name }}</p>
+              <p>{{ theCartItems.unitPrice | currency: 'USD' }}</p>
+            </td>
+            <td>
+              <div class="items">
+                <label>Quantity: </label>
+                <div class="d-flex justify-content-center align-items-center">
+                  <div class="col-auto">
+                    <button (click)="incrementQuantity(theCartItems)" class="btn btn-primary btn-sm mr-2"><i
+                        class="fas fa-plus"></i></button>
+                  </div>
+                  <div class="col-auto">
+                    {{ getCartItemQuantity(theCartItems) }}
+                  </div>
+                  <div class="col-auto">
+                    <button (click)="decrementQuantity(theCartItems)" class="btn btn-primary btn-sm ml-2"><i
+                        class="fas fa-minus"></i></button>
+                  </div>
+                  <div> <!-- Ini adalah div yang perlu ditambahkan -->
+                    <button (click)="removeFromCart(theCartItems)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <p class="mt-2">Subtotal: {{ theCartItems.quantity * theCartItems.unitPrice | currency : 'USD' }}</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Table row for total quantity and price -->
+          <tr>
+            <td colspan="2"></td> <!-- Perbarui colspan menjadi 2 -->
+            <td style="font-weight: bold"> <!-- Ubah td ke dalam td yang tepat -->
+              <p>Total Quantity: {{ totalQuantity }}</p>
+              <p>Total Price: {{ totalPrice | currency: 'USD' }}</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Display this if there are no products in the cart -->
+      <div *ngIf="totalQuantity == 0" class="alert alert-warning col-md-12" role="alert">
+        Your Cart is Empty - Let's Shopping
+      </div>
+    </div>
+  </div>
+</div>

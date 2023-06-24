@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from '../common/cart-item';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class CartService {
   totalPrice: Subject<number> = new Subject<number>();
   totalQuantity: Subject<number> = new Subject<number>();
 
-  constructor(){}
+  constructor(private router: Router) {}
+
 
     addToCart(theCartItem: CartItem){
     // check if we already have the item in our cart
@@ -44,6 +47,7 @@ export class CartService {
   this.computeCartTotals();
 
     }
+  
   computeCartTotals() {
     let totalPriceValue: number = 0;
     let totalQuantityValue: number = 0;
@@ -60,7 +64,15 @@ export class CartService {
 
     //log cart data just for debugging purposes
     this.logCartData(totalPriceValue, totalQuantityValue);
+    
   }
+  
+  getCartItemQuantity(theCartItem: CartItem): number {
+    const cartItem = this.cartItems.find(item => item.id === theCartItem.id);
+    return cartItem ? cartItem.quantity : 0;
+    
+  }
+  
   logCartData(totalPriceValue : number, totalQuantityValue : number){
     console.log("Contents of the cart")
     for(let tempCartItem of this.cartItems){
@@ -71,4 +83,27 @@ export class CartService {
     console.log(`totalPrice: ${totalPriceValue.toFixed(2)}, totalQuantity: ${totalQuantityValue}`)
     console.log("=====")
   }
+
+
+  decrementQuantity(theCartItem: CartItem) {
+    const cartItem = this.cartItems.find(item => item.id === theCartItem.id);
+    if (cartItem) {
+      cartItem.quantity--;
+      if (cartItem.quantity === 0) {
+        this.removeFromCart(cartItem);
+      }
+      this.computeCartTotals();
+    }
+  }
+
+
+  removeFromCart(theCartItem: CartItem) {
+    const index = this.cartItems.findIndex(item => item.id === theCartItem.id);
+    if (index !== -1) {
+      this.cartItems.splice(index, 1);
+      this.computeCartTotals();
+    }
+    
+  }
+
 }
