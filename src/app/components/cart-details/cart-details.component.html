@@ -35,21 +35,22 @@
                     <button (click)="decrementQuantity(theCartItems)" class="btn btn-primary btn-sm ml-2"><i
                         class="fas fa-minus"></i></button>
                   </div>
-                  <div> <!-- Ini adalah div yang perlu ditambahkan -->
-                    <button (click)="remove(theCartItems)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                  </div>
                 </div>
                 <p class="mt-2">Subtotal: {{ theCartItems.quantity * theCartItems.unitPrice | currency : 'USD' }}</p>
+                <div class="col-auto ml-auto">
+                  <button (click)="removeFromCart(theCartItems)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
               </div>
             </td>
           </tr>
 
           <!-- Table row for total quantity and price -->
           <tr>
-            <td colspan="2"></td> <!-- Perbarui colspan menjadi 2 -->
-            <td style="font-weight: bold"> <!-- Ubah td ke dalam td yang tepat -->
+            <td colspan="2"></td> 
+            <td>
               <p>Total Quantity: {{ totalQuantity }}</p>
               <p>Total Price: {{ totalPrice | currency: 'USD' }}</p>
+              <a routerLink="/checkout" class="btn btn-warning ">Checkout</a>
             </td>
           </tr>
         </table>

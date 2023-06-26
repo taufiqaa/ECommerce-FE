@@ -12,9 +12,12 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Define routes
 const route : Routes =[
+{path:'checkout', component: CheckoutComponent},
 {path:'cart-details', component: CartDetailsComponent},
 {path:'products/:id', component: ProductDetailsComponent},
 {path:'maximum-price/:maxPrice', component: ProductListComponent},
@@ -36,13 +39,16 @@ const route : Routes =[
     MaxPriceFilterComponent,
     ProductDetailsComponent,
     CartStatusComponent,
-    CartDetailsComponent
+    CartDetailsComponent,
+    CheckoutComponent
   ],
   imports: [
     RouterModule.forRoot(route),
     BrowserModule,
     HttpClientModule,
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
