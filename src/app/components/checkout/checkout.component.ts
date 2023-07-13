@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
 import { CartService } from 'src/app/services/cart.service';
 import { ShopFormService } from 'src/app/services/shop-form.service';
+import {ShopFormValidators} from 'src/app/validators/shop-form-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -36,9 +37,9 @@ export class CheckoutComponent implements OnInit {
     
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: [''],
-        lastName: [''],
-        email: ['']
+        firstName: new FormControl('',[Validators.required, Validators.minLength(2),ShopFormValidators.preventWhiteSpace]),
+        lastName: new FormControl('',[Validators.required,Validators.minLength(2), ShopFormValidators.preventWhiteSpace]),
+        email: new FormControl ('',[Validators.required,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),ShopFormValidators.preventWhiteSpace])
       }),
         shippingAddress : this.formBuilder.group({
         country : [''],
@@ -73,14 +74,7 @@ export class CheckoutComponent implements OnInit {
       );
 
       
-      //populate state
-      // this.shopFormService.getStates(theCountryCode).subscribe(
-      //   data=>{
-      //     this.states = data
-      //   }
-      // )
-
-    //populate credit card months
+   //populate credit card months
     const startMonth : number = new Date().getMonth() + 1;
     console.log("startMonth : " + startMonth);
 
@@ -88,6 +82,9 @@ export class CheckoutComponent implements OnInit {
       data=> {
         this.creditCardMonths = data}
     );
+
+
+  
 
 
     //populate credit card years
@@ -118,6 +115,11 @@ export class CheckoutComponent implements OnInit {
   }
 
 
+  get firstName(){return this.checkoutFormGroup.get('customer.firstName');}
+  get lastName (){return this.checkoutFormGroup.get('customer.lastName');}
+  get email(){return this.checkoutFormGroup.get('customer.email');}
+
+
   copyShippingAddressToBillingAddress(event: Event) {
     if ((event.target as HTMLInputElement).checked) {
       this.checkoutFormGroup.controls.billingAddress.setValue(
@@ -133,6 +135,12 @@ export class CheckoutComponent implements OnInit {
   
   onSubmit() {
     console.log("Handling the submit button");
+
+    if(this.checkoutFormGroup.invalid){
+      this.checkoutFormGroup.markAllAsTouched();
+    }
+
+
     console.log(this.checkoutFormGroup.get('customer').value);
     console.log("Email" + this.checkoutFormGroup.get('customer').value.email);
 
