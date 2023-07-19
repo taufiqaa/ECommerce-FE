@@ -15,5 +15,13 @@ export class ShopFormValidators {
         }
     }
 
+    //number validation
+    static numberInput(control : FormControl): ValidationErrors {
+        if(isNaN(control.value)){
+            return {'numberInput': true}
+        }else{
+            return null!;
+        }
+    }
 
 }
